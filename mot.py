@@ -17,8 +17,6 @@ news_table = get_news()
 
 mail_html = MAIL_FORMAT.format(
     STYLE=STYLES, WEATHER=weather_table, NEWS=news_table)
-with open('mail.html', 'w') as f:
-    f.write(mail_html)
 msg.attach(MIMEText(mail_html, 'html'))
 
 with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
