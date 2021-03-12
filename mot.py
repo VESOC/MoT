@@ -3,21 +3,22 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import date
 from info import *
-from mail import *
+from mail import MAIL_FORMAT, STYLES
 from scrap_news import get_news
 from scrap_weather import get_weather
 
-msg = MIMEMultipart('alternative')
+msg = MIMEMultipart('html')
 msg['Subject'] = f'{date.today().strftime("%m/%d/%Y")}의 메일'
 msg['From'] = EMAIL_ADDRESS
 msg['To'] = EMAIL_ADDRESS
 
-weather_info = get_weather()
-news_info = get_news()
-info = weather_info + news_info
+weather_table = get_weather()
+news_table = get_news()
 
-mail_html = MAIL_FORMAT.format(style=STYLES, *info)
-msg.attach(MIMEText(''.join(info), 'plain'))
+mail_html = MAIL_FORMAT.format(
+    STYLE=STYLES, WEATHER=weather_table, NEWS=news_table)
+with open('mail.html', 'w') as f:
+    f.write(mail_html)
 msg.attach(MIMEText(mail_html, 'html'))
 
 with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:

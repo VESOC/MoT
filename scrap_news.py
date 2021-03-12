@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from mail import NEWS_TABLE_FORMAT, ARTICLE_FORMAT
 
 
 def prepare_soup():
@@ -10,37 +11,33 @@ def prepare_soup():
     return bs
 
 
-def get_headlines(bs, news):
-    main_headline = bs.find_all('p', {'class': 'hdline_flick_tit'})
-    headlines = bs.find_all('a', {'class': 'lnk_hdline_article'})
-    for headline in main_headline + headlines:
-        news['헤드라인'].append(headline.string.strip())
+def get_headline_table(bs):
+    articles = ''
+    for img_headline in bs.find_all('a', {'class': 'lnk_hdline_main_article'}) + bs.find_all('a', {'class': 'lnk_hdline_article'}):
+        link = ('https://news.naver.com' if img_headline['href'].startswith(
+            '/') else '') + img_headline['href']
+        title = img_headline.text.strip(' \n')
+        articles += ARTICLE_FORMAT.format(link, title)
+    headline_table = NEWS_TABLE_FORMAT.format(
+        TYPE='헤드라인', ARTICLES=articles.rstrip('\n'))
+    return headline_table
 
 
-def get_specific_news(bs, news):
-    news_types = ['정치', '경제', '사회', '생활/문화', '세계', 'IT/과학']
-    for idx, news_type in enumerate(bs.find_all('div', {'class': 'com_list'})):
-        news[news_types[idx]].append(news_type.find(
-            'dl', {'class': 'mtype_img'}).text.strip())
-        for type_news in news_type.find_all('strong'):
-            news[news_types[idx]].append(type_news.string)
+def get_specific_news_table(bs):
+    news_types = ('정치', '경제', '사회', '생활/문화', '세계', 'IT/과학')
+    news_table = ''
+    for news_type, news_list in zip(news_types, bs.find_all('div', {'class': 'com_list'})):
+        articles = ''
+        for article in news_list.find_all('a'):
+            if title := article.text.strip(' \n'):
+                link = article['href']
+                articles += ARTICLE_FORMAT.format(link, title)
+        news_table += NEWS_TABLE_FORMAT.format(TYPE=news_type,
+                                               ARTICLES=articles.rstrip('\n'))
+    return news_table
 
 
 def get_news():
-    news_types = {
-        '헤드라인': [],
-        '정치': [],
-        '경제': [],
-        '사회': [],
-        '생활/문화': [],
-        '세계': [],
-        'IT/과학': [],
-    }
     bs = prepare_soup()
-    get_headlines(bs, news_types)
-    get_specific_news(bs, news_types)
-    # print(news_types['헤드라인'])
-    news = [n.strip().replace('\n', '').replace('동영상', '').replace('기사', '')
-            for news_type in news_types.values() for n in news_type if n.replace('\n', '') != '동영상기사']
-    news = [n for n in news if len(n.strip())]
-    return news
+    news_table = get_headline_table(bs) + get_specific_news_table(bs)
+    return news_table

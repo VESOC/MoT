@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from mail import WEATHER_FORMAT
 
 
 def prepare_soup():
@@ -15,10 +16,12 @@ def get_weather():
     bs = prepare_soup()
     cur_temp = bs.find('p', {'class': 'info_temperature'}
                        ).text.replace('도씨', '')
-    weather = bs.find('p', {'class': 'cast_txt'}).text.strip().split(',')[0]
     minmax_temp = bs.find('span', {'class': 'merge'}).text.strip()
+    weather = bs.find('p', {'class': 'cast_txt'}).text.strip().split(',')[0]
     fine_dust = bs.find('dl', {'class': 'indicator'}).contents[3].contents[1]
     ultrafine_dust = bs.find(
         'dl', {'class': 'indicator'}).contents[7].contents[1]
     ozone = bs.find('dl', {'class': 'indicator'}).contents[11].contents[1]
-    return [cur_temp, weather, minmax_temp, fine_dust, ultrafine_dust, ozone]
+    weather_table = WEATHER_FORMAT.format(
+        cur_temp, minmax_temp, weather, fine_dust, ultrafine_dust, ozone)
+    return weather_table
