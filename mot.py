@@ -4,8 +4,8 @@ from email.mime.multipart import MIMEMultipart
 from datetime import date
 from info import *
 from mail import MAIL_FORMAT, STYLES
-from scrap_news import get_news
-from scrap_weather import get_weather
+from scrap_news import get_news_table
+from scrap_weather import get_weather_table
 
 msg = MIMEMultipart('html')
 msg['Subject'] = f'{date.today().strftime("%m/%d/%Y")}의 메일'
