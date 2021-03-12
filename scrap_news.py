@@ -37,7 +37,7 @@ def get_specific_news_table(bs):
     return news_table
 
 
-def get_news():
+def get_news_table():
     bs = prepare_soup()
     news_table = get_headline_table(bs) + get_specific_news_table(bs)
     return news_table

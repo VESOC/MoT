@@ -12,8 +12,8 @@ msg['Subject'] = f'{date.today().strftime("%m/%d/%Y")}의 메일'
 msg['From'] = EMAIL_ADDRESS
 msg['To'] = EMAIL_ADDRESS
 
-weather_table = get_weather()
-news_table = get_news()
+weather_table = get_weather_table()
+news_table = get_news_table()
 
 mail_html = MAIL_FORMAT.format(
     STYLE=STYLES, WEATHER=weather_table, NEWS=news_table)

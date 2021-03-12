@@ -12,7 +12,7 @@ def prepare_soup():
     return bs
 
 
-def get_weather():
+def get_weather_table():
     bs = prepare_soup()
     cur_temp = bs.find('p', {'class': 'info_temperature'}
                        ).text.replace('도씨', '')
