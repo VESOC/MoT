@@ -2,7 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import date
-from info import *
+from info import EMAIL_ADDRESS, EMAIL_PASSWORD
 from mail import MAIL_FORMAT, STYLES
 from scrap_news import get_news_table
 from scrap_weather import get_weather_table

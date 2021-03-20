@@ -29,7 +29,7 @@ def get_specific_news_table(bs):
     for news_type, news_list in zip(news_types, bs.find_all('div', {'class': 'com_list'})):
         articles = ''
         for article in news_list.find_all('a'):
-            if title := article.text.strip(' \n'):
+            if title := article.text.strip(' \n').replace('동영상 기사', ''):
                 link = article['href']
                 articles += ARTICLE_FORMAT.format(link, title)
         news_table += NEWS_TABLE_FORMAT.format(TYPE=news_type,
