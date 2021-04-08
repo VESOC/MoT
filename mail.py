@@ -1,7 +1,6 @@
 STYLES = '''
 <style>
     body {
-        width: 70vw;
         text-align: center;
         color: rgba(96, 173, 141, 0.932);
         background-color: black;

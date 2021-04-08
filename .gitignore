@@ -3,3 +3,4 @@
 .DS_Store
 mail.html
 info.py
+*.log
