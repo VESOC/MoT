@@ -4,9 +4,10 @@
 
 Base program only supports gmail but you can easily change the mail server on line 23 on MoT.py
 
-info.py file should be created with the following code
+info.py.example should be renamed to be info.py and have your email/password information.
 
+Example info.py
 ```{python}
-EMAIL_ADDRESS='Your Email'
-EMAIL_PASSWORD='Your Email Password'
+EMAIL_ADDRESS='example@exmaple.com'
+EMAIL_PASSWORD='myemailpassword'
 ```
