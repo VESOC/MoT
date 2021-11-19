@@ -17,6 +17,7 @@ def prepare_mail():
 
 
 def get_info_tables():
+    weather_table = []
     weather_table = get_weather_table()
     news_table = get_news_table()
     return [weather_table, news_table]
